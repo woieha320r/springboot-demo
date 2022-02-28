@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootwebdemo.demo.mapper.GlobalLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.springbootwebdemo.demo.entity.GlobalLogEntity">
+        <id column="id" property="id"/>
+        <result column="http_method" property="httpMethod"/>
+        <result column="login_account" property="loginAccount"/>
+        <result column="method_description" property="methodDescription"/>
+        <result column="request_url" property="requestUrl"/>
+        <result column="remote_address" property="remoteAddress"/>
+        <result column="remote_host" property="remoteHost"/>
+        <result column="remote_port" property="remotePort"/>
+        <result column="local_address" property="localAddress"/>
+        <result column="local_name" property="localName"/>
+        <result column="local_port" property="localPort"/>
+        <result column="request_time" property="requestTime"/>
+        <result column="is_success" property="success"/>
+        <result column="class_path" property="classPath"/>
+        <result column="request_param" property="requestParam"/>
+        <result column="response_body" property="responseBody"/>
+        <result column="exception_message" property="exceptionMessage"/>
+        <result column="version" property="version"/>
+        <result column="is_deleted" property="deleted"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , http_method, login_account, method_description, request_url, remote_address, remote_host, remote_port, local_address, local_name, local_port, request_time, is_success, class_path, request_param, response_body, exception_message, version, is_deleted, gmt_create, gmt_modified
+    </sql>
+
+    <insert id="batchSaveLog" parameterType="java.util.List">
+        INSERT INTO global_log (`http_method`, `login_account`, `method_description`, `request_url`, `remote_address`,
+        `remote_host`, `remote_port`, `local_address`, `local_name`, `local_port`, `request_time`, `is_success`,
+        `class_path`, `request_param`, `response_body`, `exception_message`, `version`, `is_deleted`, `gmt_create`,
+        `gmt_modified`) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.httpMethod, jdbcType=VARCHAR},
+            #{item.loginAccount, jdbcType=BIGINT},
+            #{item.methodDescription, jdbcType=VARCHAR},
+            #{item.requestUrl, jdbcType=VARCHAR},
+            #{item.remoteAddress, jdbcType=VARCHAR},
+            #{item.remoteHost, jdbcType=VARCHAR},
+            #{item.remotePort, jdbcType=VARCHAR},
+            #{item.localAddress, jdbcType=VARCHAR},
+            #{item.localName, jdbcType=VARCHAR},
+            #{item.localPort, jdbcType=VARCHAR},
+            #{item.requestTime, jdbcType=TIMESTAMP},
+            #{item.success, jdbcType=BOOLEAN},
+            #{item.classPath, jdbcType=VARCHAR},
+            #{item.requestParam, jdbcType=VARCHAR},
+            #{item.responseBody, jdbcType=VARCHAR},
+            #{item.exceptionMessage, jdbcType=VARCHAR},
+            #{item.version, jdbcType=INTEGER},
+            #{item.deleted, jdbcType=BOOLEAN},
+            #{item.gmtCreate, jdbcType=TIMESTAMP},
+            #{item.gmtModified, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+</mapper>

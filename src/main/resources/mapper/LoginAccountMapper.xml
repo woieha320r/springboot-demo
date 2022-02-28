@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootwebdemo.demo.mapper.LoginAccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.springbootwebdemo.demo.entity.LoginAccountEntity">
+        <id column="id" property="id" />
+        <result column="login_name" property="loginName" />
+        <result column="nick_name" property="nickName" />
+        <result column="login_password" property="loginPassword" />
+        <result column="login_password_salt" property="loginPasswordSalt" />
+        <result column="email_security" property="emailSecurity" />
+        <result column="email_public" property="emailPublic" />
+        <result column="remind_when_login" property="remindWhenLogin" />
+        <result column="account_status" property="accountStatus" />
+        <result column="version" property="version" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, login_name, nick_name, login_password, login_password_salt, email_security, email_public, remind_when_login, account_status, version, is_deleted, gmt_create, gmt_modified
+    </sql>
+
+</mapper>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>websocket通讯1</title>
+</head>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+    var socket;
+
+    function openSocket() {
+        if (typeof (WebSocket) == "undefined") {
+            console.error("不支持WebSocket");
+        } else {
+            if (socket != null) {
+                socket.close();
+                socket = null;
+            }
+            socket = new WebSocket("ws://localhost:9000/websocket/a")
+            //打开事件
+            socket.onopen = function () {
+                console.log("websocket已打开");
+            };
+            //获得消息事件
+            socket.onmessage = function (msg) {
+                console.log("收到消息：" + msg.data);
+            };
+            //关闭事件
+            socket.onclose = function () {
+                console.log("websocket已关闭");
+            };
+            //发生了错误事件
+            socket.onerror = function () {
+                console.error("websocket错误");
+            }
+        }
+    }
+
+    function sendMessage() {
+        if (typeof (WebSocket) == "undefined") {
+            console.error("不支持WebSocket");
+        } else {
+            socket.send("来自前端的消息");
+        }
+    }
+</script>
+<body>
+<div><a onclick="openSocket()">开启socket</a></div>
+<div><a onclick="sendMessage()">发送消息</a></div>
+</body>
+
+</html>
