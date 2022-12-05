@@ -1,0 +1,13 @@
+#druid配置
+spring:
+  datasource:
+    druid:
+      # 网页管理端
+      stat-view-servlet:
+        enabled: true
+        login-username: root
+        login-password: 123456
+    dynamic:
+      # 某个数据源具体的配置可以配在spring.datasource.dynamic.datasource.xxx.druid下
+      druid:
+        connection-error-retry-attempts: 3

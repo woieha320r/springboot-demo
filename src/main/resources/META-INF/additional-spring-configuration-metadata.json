@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "app.token.ignore-servlet-paths",
+      "type": "java.util.List",
+      "description": "无需token认证的接口路径."
+    },
+    {
+      "name": "app.token.ignore-servlet-paths-default",
+      "type": "java.util.List",
+      "description": "无需token认证的接口路径-不分环境."
+    },
+    {
+      "name": "third-party-secret.github",
+      "type": "java.util.Map",
+      "description": "github的client_id: client_secret."
+    }
+  ]
+}

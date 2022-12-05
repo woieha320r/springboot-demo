@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="js/common-js.js"></script>
+    <script>
+        /**
+         * 获取github授权码
+         */
+        function loginByGithub() {
+            $.ajax({
+                url: api + "/token/github/client_id",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.log("client_id: " + result.data);
+                    github_client_id = result.data;
+                }
+            });
+            // 生成唯一标识state并存储于全局容器，重定向至本页，使用sessionStorage。
+            // 页面加载后若url中存在code和state参数，则开始执行验证state是否存在于sessionStorage，若存在，则向后端交换token
+            const state = randomStr(16, 16);
+            sessionStorage.setItem(state, state);
+
+            window.location.href = github_get_code_url
+                + "?client_id=" + github_client_id
+                + "&redirect_uri=" + github_redirect_uri
+                + "&scope=user"
+                + "&state=" + state;
+        }
+    </script>
+    <script>
+        /**
+         * 页面加载后立即判断是否为github重定向
+         */
+        $(document).ready(function () {
+            const code = getQueryString("code");
+            if (!isEmpty(code)) {
+                const state = getQueryString("state");
+                if (!isEmpty(state) && sessionStorage.getItem(state) === state) {
+                    $.ajax({
+                        url: api + "/github",
+                        type: "GET",
+                        contentType: "application/json;charset=utf-8",
+                        data: {"clientId": github_client_id, "code": code, "loginType": "GITHUB"},
+                        dataType: "json",
+                        success: function (result) {
+                            console.log("token: " + result.data.token);
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+<!--
+    App提前在GitHub申请client_id和配对的client_secret，后者是不可对外暴露的，同时设置回调地址（与下方的redirect_uri同）
+    用户试图通过GitHub登录，前端应携带路径参数使浏览器转到GitHub用户授权页：
+        client_id(向GitHub申请的)
+        state(随机字符串，此次请求的唯一标识)
+        redirect_uri(前端用于接收GitHub响应参数的页地址)
+    GitHub通过响应302，使浏览器重定向到redirect_uri?state=传入的state&code=GitHub返回的用户授权码
+    redirect_uri收到请求后应对比state，不一致则应停止
+    后端携带client_id、client_secret(和client_id是一对儿)、code向GitHub申请后续获取用户信息的token
+
+    后端无需因为安全问题而参与code的获得流程，因为用户授权必须通过浏览器让用户可视进行，这个过程的请求响应中携带了client_id、code是对外暴露的
+    如果整个流程由后端负责，那前端调接口得用模拟点击<a>的方式，因为中间有重定向行为，但结束后后端咋把token交给前端呢？也用回调地址重定向的方式？
+-->
+<button onclick="loginByGithub()">通过Github登录</button>
+</body>
+</html>

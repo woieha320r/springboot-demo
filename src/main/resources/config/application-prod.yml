@@ -1,0 +1,6 @@
+#生产环境
+knife4j:
+  production: true
+spring:
+  mail:
+    test-connection: true

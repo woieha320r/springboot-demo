@@ -1,98 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.4.13</version>
+        <relativePath/>
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>SpringBootWebDemo</artifactId>
-    <version>1.0.0</version>
-    <name>SpringBootWebDemo</name>
-    <description>Demo project for Spring Boot</description>
-    <!--使用maven的父子module时，父pom的打包方式是pom-->
-    <!--<packaging>pom</packaging>-->
+    <groupId>pri.demo</groupId>
+    <artifactId>springboot</artifactId>
+    <version>1.0</version>
+    <name>springboot-demo</name>
+    <description>Spring Boot样例</description>
 
-    <!--变量定义-->
+    <repositories>
+        <repository>
+            <id>aliyunmaven</id>
+            <name>阿里云公共仓库</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyunmaven</id>
+            <name>阿里云公共仓库</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profile-choose>dev</profile-choose>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profile-choose>test</profile-choose>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profile-choose>prod</profile-choose>
+            </properties>
+        </profile>
+    </profiles>
+
     <properties>
-        <java.version>1.8</java.version>
-        <hutool.version>5.7.16</hutool.version>
-        <mybaits-plus.version>3.4.3.4</mybaits-plus.version>
-        <mybatis-plus-generator.version>3.5.1</mybatis-plus-generator.version>
-        <knife4j.version>3.0.3</knife4j.version>
-        <dynamic-datasource.version>3.4.1</dynamic-datasource.version>
-        <druid.version>1.2.4</druid.version>
-        <auth0-jwt.version>3.18.2</auth0-jwt.version>
-        <jasypt.version>3.0.4</jasypt.version>
-        <!--<p6spy.version>1.8.0</p6spy.version>-->
+        <java.version>8</java.version>
+        <maven.test.skip>true</maven.test.skip>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <version.mysql-connector-j>8.0.31</version.mysql-connector-j>
+        <version.mybatis-plus-boot-starter>3.4.2</version.mybatis-plus-boot-starter>
+        <version.mybatis-plus-generator>3.5.3</version.mybatis-plus-generator>
+        <version.p6spy>3.9.1</version.p6spy>
+        <version.druid>1.2.6</version.druid>
+        <version.dynamic-datasource-spring-boot-starter>3.4.1</version.dynamic-datasource-spring-boot-starter>
+        <version.hutool-all>5.7.22</version.hutool-all>
+        <!--再高就是class55版本了，jdk8是52，没法儿跑-->
+        <version.artemis-jms-server>2.19.1</version.artemis-jms-server>
+        <version.knife4j-openapi2-spring-boot-starter>4.0.0</version.knife4j-openapi2-spring-boot-starter>
+        <version.java-jwt>4.1.0</version.java-jwt>
+        <version.freemarker-java8>2.0.0</version.freemarker-java8>
     </properties>
 
-    <dependencies>
-        <!--hutool工具包-->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
-        <!--mybatis-plus内含mybatis-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybaits-plus.version}</version>
-        </dependency>
-        <!--mybatis-plus-generator实体类生成-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${mybatis-plus-generator.version}</version>
-        </dependency>
-        <!--knife4j-swagger在线文档-->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>${knife4j.version}</version>
-        </dependency>
-        <!--dynamic-datasource动态数据源-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-            <version>${dynamic-datasource.version}</version>
-        </dependency>
-        <!--druid数据库连接池-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid.version}</version>
-        </dependency>
-        <!--auto0-jwt jwt-->
-        <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>${auth0-jwt.version}</version>
-        </dependency>
-        <!--jasypt配置文件加密-->
-        <dependency>
-            <groupId>com.github.ulisesbocchio</groupId>
-            <artifactId>jasypt-spring-boot-starter</artifactId>
-            <version>${jasypt.version}</version>
-        </dependency>
-        <!--sql性能分析，影响性能，不建议生产环境使用。TODO:疑似与com.baomidou.dynamic.datasource无法合作-->
-        <!--<dependency>-->
-        <!--    <groupId>com.github.gavlyukovskiy</groupId>-->
-        <!--    <artifactId>p6spy-spring-boot-starter</artifactId>-->
-        <!--    <version>${p6spy.version}</version>-->
-        <!--</dependency>-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${version.mysql-connector-j}</version>
+            </dependency>
+            <!--多数据源切换，支持druid、p6spy、mybatis-plus，加依赖按照这里面声明的版本-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${version.dynamic-datasource-spring-boot-starter}</version>
+            </dependency>
+            <!--已包含mybatis，支持配置文件加密，用的是EnvironmentPostProcessor方式，jasypt老报错-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${version.mybatis-plus-boot-starter}</version>
+            </dependency>
+            <!--entity生成-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${version.mybatis-plus-generator}</version>
+            </dependency>
+            <!--sql性能分析-->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${version.p6spy}</version>
+            </dependency>
+            <!--druid连接池，${server.servlet.context-path}/druid-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${version.druid}</version>
+            </dependency>
+            <!--实用工具-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${version.hutool-all}</version>
+            </dependency>
+            <!--嵌入式activemq-artemis服务端-->
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-jms-server</artifactId>
+                <version>${version.artemis-jms-server}</version>
+            </dependency>
+            <!--在线文档生成：${server.servlet.context-path}/doc.html-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+                <version>${version.knife4j-openapi2-spring-boot-starter}</version>
+            </dependency>
+            <!--jwt-->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${version.java-jwt}</version>
+            </dependency>
+            <!--freemarker LocalDateTime支持-->
+            <dependency>
+                <groupId>no.api.freemarker</groupId>
+                <artifactId>freemarker-java8</artifactId>
+                <version>${version.freemarker-java8}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
+    <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
+            <artifactId>spring-boot-starter-artemis</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,7 +170,23 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-activemq</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.api.freemarker</groupId>
+            <artifactId>freemarker-java8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -112,31 +198,9 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -147,73 +211,52 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>compile</scope>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
         </dependency>
     </dependencies>
 
-    <profiles>
-        <!--在读取application主配置文件的同时会读取以下被激活的额外配置文件用来灵活依据环境定义配置项-->
-        <!--开发环境配置文件-->
-        <profile>
-            <id>dev</id>
-            <!--默认选择开发环境配置文件-->
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <!--自定义节点名，用于与spring的profile联动，其取值于此-->
-            <!--spring.profile.active的值是@此处自定义的节点名称@-->
-            <!--build/resources/resource定义打包的配置文件时也许用到此自定义节点名-->
-            <properties>
-                <profile-choose>dev</profile-choose>
-            </properties>
-        </profile>
-        <!--测试环境配置文件-->
-        <profile>
-            <id>test</id>
-            <properties>
-                <profile-choose>test</profile-choose>
-            </properties>
-        </profile>
-        <!--生产环境配置文件-->
-        <profile>
-            <id>prod</id>
-            <properties>
-                <profile-choose>prod</profile-choose>
-            </properties>
-        </profile>
-    </profiles>
-
+    <!--自定义打包结构参考https://blog.csdn.net/monkeyhi/article/details/126646414-->
     <build>
-        <!--定义打包时需要引入的配置文件，避免引入所有配置文件-->
-        <resources>
-            <!--先排除掉指定路径下所有application-开头的文件-->
-            <resource>
-                <!--指定路径-->
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>application-*</exclude>
-                </excludes>
-            </resource>
-            <!--再包含指定路径中所需要的配置文件，此处引用profiles/profile/properties中的自定义节点名来动态引入-->
-            <resource>
-                <directory>src/main/resources</directory>
-                <!--将maven变量替换为其值-->
-                <filtering>true</filtering>
-                <includes>
-                    <include>application-${profile-choose}*</include>
-                </includes>
-            </resource>
-        </resources>
-
+        <finalName>${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

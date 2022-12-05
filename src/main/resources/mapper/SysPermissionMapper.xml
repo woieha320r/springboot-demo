@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pri.demo.springboot.mapper.SysPermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="pri.demo.springboot.entity.SysPermissionEntity">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="level" property="level"/>
+        <result column="parent_name" property="parentName"/>
+        <result column="front_path" property="frontPath"/>
+        <result column="description" property="description"/>
+        <result column="is_deleted" property="deleted"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, `name`, `level`, parent_id, `description`, is_deleted, create_time, update_time
+    </sql>
+
+    <select id="listByUser" resultType="pri.demo.springboot.entity.SysPermissionEntity">
+        SELECT sp.id, sp.name, sp.`level`, sp.parent_id, sp.full_name, sp.description, sp.create_time, sp.update_time
+        FROM sys_map_user_role AS smur
+        LEFT JOIN sys_role AS sr ON(sr.id = smur.role_id AND sr.is_deleted IS FALSE)
+        LEFT JOIN sys_map_role_permission AS smrp ON(smrp.role_id = sr.id AND smrp.is_deleted IS FALSE)
+        LEFT JOIN sys_permission AS sp ON(sp.id = smrp.permission_id AND sp.is_deleted IS FALSE)
+        WHERE smur.user_id = #{userId}
+        AND smur.is_deleted IS FALSE
+    </select>
+
+    <select id="namesByUser" resultType="java.lang.String">
+        SELECT sp.name
+        FROM sys_map_user_role AS smur
+        LEFT JOIN sys_role AS sr ON(sr.id = smur.role_id AND sr.is_deleted IS FALSE)
+        LEFT JOIN sys_map_role_permission AS smrp ON(smrp.role_id = sr.id AND smrp.is_deleted IS FALSE)
+        LEFT JOIN sys_permission AS sp ON(sp.id = smrp.permission_id AND sp.is_deleted IS FALSE)
+        WHERE smur.user_id = #{userId}
+        AND smur.is_deleted IS FALSE
+    </select>
+
+    <select id="allNames" resultType="java.lang.String">
+        SELECT sp.name
+        FROM sys_map_user_role AS smur
+        LEFT JOIN sys_role AS sr ON(sr.id = smur.role_id AND sr.is_deleted IS FALSE)
+        LEFT JOIN sys_map_role_permission AS smrp ON(smrp.role_id = sr.id AND smrp.is_deleted IS FALSE)
+        LEFT JOIN sys_permission AS sp ON(sp.id = smrp.permission_id AND sp.is_deleted IS FALSE)
+        AND smur.is_deleted IS FALSE
+    </select>
+
+</mapper>

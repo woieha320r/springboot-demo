@@ -1,0 +1,57 @@
+#开发环境
+server:
+  port: 9000
+logging:
+  level:
+    root: debug
+spring:
+  servlet:
+    multipart:
+      location: /Volumes/CaseSensitive/upload
+  datasource:
+    dynamic:
+      primary: read
+      strict: true
+      p6spy: true
+      datasource:
+        read:
+          url: jdbc:mysql://localhost:3310/springboot-demo?useSSL=true&serverTimezone=GMT%2B8&characterEncoding=UTF-8
+          # 将需要加密的值添加mpwmy:前缀，执行pri.demo.springboot.core.util.encryption.Encrypt加密
+          # 随机密钥用pri.demo.springboot.core.util.encryption.RandomKey生成
+          username: root
+          password: 123456
+          schema: db/schema.sql
+          data: db/data.sql
+        write:
+          url: jdbc:mysql://localhost:3310/springboot-demo?useSSL=true&serverTimezone=GMT%2B8&characterEncoding=UTF-8
+          username: root
+          password: 123456
+  artemis:
+    mode: embedded
+    password: 123456
+    port: 61616
+    user: root
+  # 暂时关闭某组件的自动配置类，如果自定义了配置，需要注释掉。比如SpringSecurity
+  # autoconfigure:exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  redis:
+    client-type: lettuce
+    host: 127.0.0.1
+    port: 6380
+    database: 0
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: xxx
+    password: NZZJQCKZZUDMMQMZ
+  output:
+    ansi:
+      enabled: always
+knife4j:
+  basic:
+    enable: true
+    username: root
+    password: 123456
+app:
+  token:
+    ignore-servlet-paths: ${app.token.ignore-servlet-paths-default}, /webjars, /v2/api-docs, /swagger-resources, /test
+    live-after-restart: true

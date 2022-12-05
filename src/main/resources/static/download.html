@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--TODO:若文件0kb，这儿会没反应-->
+<head>
+    <meta charset="UTF-8">
+    <title>下载流文件</title>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>
+        function download() {
+            const url = 'http://127.0.0.1:9000/api/test/download?path=em%20pty.txt';
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            // xhr.setRequestHeader("token", "");
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    const blob = this.response;
+                    const fileReader = new FileReader();
+                    if (xhr.getResponseHeader('Content-Type').startsWith('application/json')) {
+                        // json数据，读取信息
+                        fileReader.onloadend = () => {
+                            console.log(JSON.parse(fileReader.result));
+                        }
+                        fileReader.readAsText(blob);
+                    } else {
+                        // 下载文件，转换为base64，可以直接放入a表情href
+                        fileReader.readAsDataURL(blob);
+                        fileReader.onload = function (e) {
+                            // 转换完成，创建一个a标签用于下载
+                            const a = document.createElement('a');
+                            // 如果读不到文件名，需要后端响应头设置此参数可取："Access-Control-Expose-Headers": "Content-Disposition"。
+                            a.download = decodeURI(xhr.getResponseHeader('Content-Disposition')).split("filename*=UTF-8''")[1];
+                            a.href = e.target.result;
+                            // 修复firefox中无法触发click
+                            $("body").append(a);
+                            a.click();
+                            $(a).remove();
+                        }
+                    }
+                }
+            };
+            // 发送ajax请求
+            xhr.send()
+        }
+    </script>
+</head>
+
+<body>
+<button onclick="download()" type="button">导出</button>
+</body>
+
+</html>

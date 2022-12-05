@@ -1,0 +1,13 @@
+浏览器用localhost打开本地站
+打开浏览器的控制台console，输入如下js回车发送请求
+
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'http://127.0.0.1的本地站地址');
+// xhr.setRequestHeader("请求头", "值");
+xhr.send(null);
+xhr.onload = function(e) {
+    var xhr = e.target;
+    console.log(xhr.responseText);
+}
+
+看是跨域还是正常返回值，把localhost和127.0.0.1反过来也行

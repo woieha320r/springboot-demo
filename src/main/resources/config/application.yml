@@ -1,0 +1,79 @@
+spring:
+  profiles:
+    active: @profile-choose@, customize, druid
+  application:
+    name: @project.name@(v@project.version@)
+  main:
+    banner-mode: log
+  # jackson配置不要使用@EnableWebMvc或定义WebMvcConfigurationSupport，否则这里不生效
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: GMT+8
+    # 这里不处理LocalDateTime，另有配置类与此处同步，redis序列化的配置类也和这里同步
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jms:
+    pub-sub-domain: true
+  artemis:
+    embedded:
+      persistent: true
+  cache:
+    type: redis
+    redis:
+      cache-null-values: false
+      key-prefix: springcache
+      # 毫秒
+      time-to-live: 86400000
+  freemarker:
+    content-type: text/html
+    charset: utf-8
+    cache: false
+    check-template-location: true
+    suffix: ftl
+  # Quartz 线程池
+  quartz:
+    properties:
+      org.quartz.threadPool.threadCount: 10
+  task:
+    # Async、MVC 线程池
+    execution:
+      pool:
+        max-size: 16
+        queue-capacity: 100
+        keep-alive: 10s
+    # Scheduler 线程池
+    scheduling:
+      pool:
+        size: 2
+logging:
+  file:
+    name: ./logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+server:
+  servlet:
+    context-path: /api
+app:
+  token:
+    # 无需指定server.servlet.context-path
+    ignore-servlet-paths-default: /**/*.html, /**/*.css, /**/*.js, /favicon.ico, /druid, /login
+mybatis-plus:
+  # 枚举扫描，在字段上打@EnumValue指定将用此字段值代替枚举进出数据库
+  type-enums-package: pri.demo.springboot.enums
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      logic-delete-field: is_deleted
+      logic-not-delete-value: false
+      logic-delete-value: true
+  configuration:
+    call-setters-on-nulls: false
+    cache-enabled: false
+third-party-secret:
+  github:
+    申请的client_id: 搭配的client_secret
